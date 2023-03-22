@@ -26,6 +26,8 @@ def move_line_left_start(serial_port):
     cmd = bytes ([0x0d])
     serial_port.write(cmd)
 
+def back_space(serial_port):
+    cmd = bytes  ([0x08])
 
 def cursor(serial_port, cursor_state): # Перепроверить это. Функция включения выключения курсора
     cmd = bytearray([0x1f, 0x43, 0x00])
@@ -33,9 +35,15 @@ def cursor(serial_port, cursor_state): # Перепроверить это. Фу
         cmd[2] = 0x01
     serial_port.write(cmd)
 
-def cursor_position(serial_port):
-    cmd = bytearray ([0x1f, 0x24, 0x04, 0x04, 0x04, 0x04]) #Вместо нолей надо внести переменные вид xL,xH, eL, eH
+def cursor_position(serial_port, x_low, x_high, y_low, y_high):
+    cmd = bytearray ([0x1f, 0x24, 0x00, 0x00, 0x00, 0x00]) #Вместо нолей надо внести переменные вид xL,xH, eL, eH
+    cmd[2] = x_low
+    cmd[3] = x_high
+    cmd[4] = y_low
+    cmd[5]= y_high
     serial_port.write(cmd)
+
+
 
 def font_width_fixed(serial_port, font_with):
     cmd = bytearray ([0x1f, 0x28, 0x67, 0x03, 0x03]) #последний аргумент может иметь значения 0x00, 0x01, 0x02, 0x03 (стр 27 мануала)
@@ -56,7 +64,6 @@ def font_width_x1_y2(serial_port):
     serial_port.write(cmd)
 def font_width_x2_y2(serial_port):
     cmd = bytes ([0x1f, 0x28, 0x67, 0x40, 0x02, 0x02]) #последние аргументы надо задать отдельно (стр 27 мануала)
-    cmd[5] = 0x00
     serial_port.write(cmd)
 
 def overwrite_mode(serial_port):
@@ -161,4 +168,7 @@ def write_screen_mode_4_window_allscreen(serial_port):
 def write_screen_mode_4_window_screen(serial_port):
     cmd = bytes ([0x1f, 0x28, 0x77, 0x14, 0x00]) #(29 стр мануала)
     serial_port.write(cmd)
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+# def real_time_bit_image_display(serial_port)
+#     cmd = bytes ([0x1F, 0x28, 0x66, 0x11, xL xH yL yH g d1...dk])
+#     serial_port.write(cmd)

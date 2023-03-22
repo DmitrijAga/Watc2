@@ -2,7 +2,7 @@ import serial
 import funkcija
 import time
 ser = serial.Serial(
-    port='COM11',
+    port='COM6',
     baudrate=38400,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
